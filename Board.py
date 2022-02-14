@@ -1,5 +1,20 @@
+import random
+from Minion import *
+
 class Board:
     def __init__(self, my_minions, enemies):
+        self.my_minions = my_minions
+        self.enemies = enemies
+
+    def __init__(self):
+        num_my_minion = random.randrange(3, 7)
+        num_enemies = random.randrange(num_my_minion, 7)
+        my_minions = []
+        enemies = []
+        for i in range(num_my_minion):
+            my_minions.append(Minion(chr(random.randint(65, 122)), random.randint(1, 8), random.randint(1, 9)))
+        for i in range(num_enemies):
+            enemies.append(Minion(chr(random.randint(65, 122)), random.randint(1, 8), random.randint(1, 9)))
         self.my_minions = my_minions
         self.enemies = enemies
 
@@ -13,10 +28,12 @@ class Board:
         print()
 
     def make_attack(self, attacker, attacked):
-        attacker.health -= attacked.attack
-        attacked.health -= attacker.attack
-        attacker.has_attacker = True
-        self.clean_body()
+        if not attacker.has_attacked:
+            attacker.health -= attacked.attack
+            attacked.health -= attacker.attack
+            attacker.has_attacker = True
+            self.clean_body()
+
 
     def clean_body(self):
         body_count = 0
@@ -64,7 +81,7 @@ class Board:
             return 0
         for i in self.my_minions:
             for j in self.enemies:
-                if j.health - i.attack == health_need[0] and i.health in available_health:
+                if j.health - i.attack == health_need[0] and i.health in available_health and not i.has_attacked:
                     self.make_attack(i, j)
                     print(f"action{i.name} attack {j.name}")
                     return 1
