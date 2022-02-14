@@ -47,7 +47,7 @@ class Board:
                 self.enemies.remove(j)
         return body_count
 
-    def defile_data(self, if_print=False):
+    def defile_data(self, print_data=False):
         health_list = []
         for i in self.my_minions:
             health_list.append(i.health)
@@ -66,13 +66,11 @@ class Board:
                 if health_list[i] == health_list[i + 1] or health_list[i] > health_need[0]:
                     available_health.append(health_list[i])
 
-
-
-
-        if if_print:
+        if print_data:
             print(f"health_list:{health_list}")
             print(f"available_health:{available_health}")
             print(f"health_need:{health_need}")
+            print()
 
         return ([health_need, available_health, health_list])
 
@@ -83,7 +81,7 @@ class Board:
             for j in self.enemies:
                 if j.health - i.attack == health_need[0] and i.health in available_health and not i.has_attacked:
                     self.make_attack(i, j)
-                    print(f"action{i.name} attack {j.name}")
+                    print(f"action {i.name} attack {j.name}")
                     return 1
         return 0
 
